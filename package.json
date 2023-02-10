@@ -1,0 +1,94 @@
+{
+	"name": "payment-service",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"watch": "nodemon --watch app/ --exec ts-node -r tsconfig-paths/register app/server.ts -e ts",
+		"start": "node dist/server.js",
+		"build": "rm -rf dist/ && yarn build:tsc && yarn build:replace",
+		"build:tsc": "tsc --project ./",
+		"build:replace": "node ./scripts/replace-paths.js",
+		"test": "npx jest --coverage",
+		"lint": "npx eslint ./app --ext .js,.jsx,.ts,.tsx",
+		"lint:fix": "eslint ./app --ext .js,.jsx,.ts,.tsx --fix",
+		"prepare": "husky install",
+		"reinstall": "rm -rf node_modules/ yarn.lock && yarn install",
+		"changelog": "standard-version && git push --follow-tags origin main",
+		"changelog:rc": "npm run changelog -- --prerelease rc",
+		"changelog:patch": "npm run changelog -- --release-as patch --prerelease rc",
+		"changelog:minor": "npm run changelog -- --release-as minor --prerelease rc",
+		"changelog:major": "npm run changelog -- --release-as major --prerelease rc",
+		"docker:up-dev": "docker-compose -f docker-compose-dev.yml up --build",
+		"docker:publish": "node ./scripts/docker-publish.js",
+		"docker:up": "docker-compose up -d --force",
+		"docker:remove": "docker-compose down && docker rm animeverse-manager"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged",
+			"pre-push": "git pull"
+		}
+	},
+	"lint-staged": {
+		"app/**/*{.js,.jsx,.ts,.tsx}": [
+			"eslint --fix",
+			"git add"
+		]
+	},
+	"prisma": {
+		"schema": "prisma/schema.prisma"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+URL-GIT-CLONE"
+	},
+	"author": "BuuhV Projects",
+	"license": "ISC",
+	"homepage": "REPOSITORY#readme",
+	"dependencies": {
+		"@buuhv/jwt-js": "^1.0.23",
+		"@buuhvprojects/chassis-microservice": "^1.5.1",
+		"axios": "^1.3.2",
+		"dotenv": "^8.2.0",
+		"moment": "^2.29.1",
+		"mongoose": "^6.4.0",
+		"node-input-validator": "^4.2.1"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.16.11",
+		"@commitlint/cli": "^16.2.1",
+		"@commitlint/config-conventional": "^16.2.1",
+		"@jest/types": "^27.5.1",
+		"@types/body-parser": "^1.19.0",
+		"@types/consolidate": "^0.14.0",
+		"@types/cors": "^2.8.8",
+		"@types/crypto-js": "^4.0.1",
+		"@types/express": "^4.17.8",
+		"@types/graphql-fields": "^1.3.4",
+		"@types/html-pdf": "^3.0.0",
+		"@types/jest": "^27.4.1",
+		"@types/mocha": "^8.0.3",
+		"@types/node": "^14.14.6",
+		"@typescript-eslint/eslint-plugin": "^5.4.0",
+		"@typescript-eslint/parser": "^5.4.0",
+		"eslint": "^8.9.0",
+		"eslint-plugin-unused-imports": "^1.1.4",
+		"husky": "^7.0.4",
+		"jest": "^27.5.1",
+		"jest-config": "^27.5.1",
+		"jest-runner-eslint": "^1.0.0",
+		"nodemon": "^2.0.20",
+		"reflect-metadata": "^0.1.13",
+		"shelljs": "^0.8.5",
+		"standard-version": "^9.3.2",
+		"ts-jest": "^27.1.3",
+		"ts-node": "^10.6.0",
+		"ts-node-dev": "^1.0.0",
+		"tsc-watch": "^4.2.9",
+		"tsconfig-paths": "^3.9.0",
+		"typescript": "^4.4.4",
+		"typescript-eslint": "^0.0.1-alpha.0"
+	},
+	"versionCode": 1
+}

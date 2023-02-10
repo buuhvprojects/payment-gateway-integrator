@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  payment-service:
+    image: buuhvprojects/payment-service:${IMAGE_VERSION}
+    build:
+      context: .
+    restart: always
+    env_file: .env
+    container_name: payment-service
+    ports:
+      - "${PORT}:${PORT}"

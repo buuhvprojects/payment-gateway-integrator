@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model BuuhV_Modules {
+  id                      String                    @id @db.VarChar(20)
+  name                    String                    @db.VarChar(50)
+  dependencies            String?                   @db.Text
+  createdAt               DateTime?                 @default(now()) @db.DateTime(0)
+  price                   Float?                    @default(0) @db.Float
+  BuuhV_SubAccountModules BuuhV_SubAccountModules[]
+  BuuhV_WorkspaceModules  BuuhV_WorkspaceModules[]
+
+  @@index([id], map: "id")
+}
+
+model BuuhV_SubAccountModules {
+  id               Int              @id @default(autoincrement())
+  workspaceId      Int
+  module           String           @db.VarChar(20)
+  userId           Int
+  createdAt        DateTime?        @default(now()) @db.DateTime(0)
+  BuuhV_Modules    BuuhV_Modules    @relation(fields: [module], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BuuhV_SubAccountModules_ibfk_1")
+  BuuhV_Workspaces BuuhV_Workspaces @relation(fields: [workspaceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BuuhV_SubAccountModules_ibfk_2")
+  BuuhV_Users      BuuhV_Users      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_BuuhV_SubAccountModules_BuuhV_Users")
+
+  @@index([module], map: "FK_BuuhV_WorkspaceModules_BuuhV_Modules")
+  @@index([workspaceId], map: "FK_BuuhV_WorkspaceModules_BuuhV_Workspaces")
+  @@index([createdAt], map: "createdAt")
+  @@index([userId], map: "userId")
+}
+
+model BuuhV_SubAccountWorkspace {
+  id               Int              @id @default(autoincrement())
+  userId           Int
+  workspaceId      Int              @default(0)
+  createdAt        DateTime?        @default(now()) @db.DateTime(0)
+  BuuhV_Users      BuuhV_Users      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_BuuhV_SubAccountWorkspace_BuuhV_Users")
+  BuuhV_Workspaces BuuhV_Workspaces @relation(fields: [workspaceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_BuuhV_SubAccountWorkspace_BuuhV_Workspaces")
+
+  @@index([userId], map: "userId")
+  @@index([workspaceId], map: "workspaceId")
+}
+
+model BuuhV_Users {
+  id                        Int                         @id @default(autoincrement())
+  asaasCustomerId           String?                     @db.Char(50)
+  role                      BuuhV_Users_role?           @default(user)
+  firstName                 String                      @db.VarChar(80)
+  lastName                  String                      @db.VarChar(80)
+  email                     String                      @db.VarChar(180)
+  password                  String                      @db.VarChar(32)
+  isCompany                 BuuhV_Users_isCompany       @default(NOT)
+  createdAt                 DateTime?                   @default(now()) @db.DateTime(0)
+  isSubAccount              BuuhV_Users_isSubAccount?   @default(NOT)
+  status                    BuuhV_Users_status?         @default(PENDING)
+  documentNumber            String?                     @unique(map: "documentNumber") @db.VarChar(50)
+  BuuhV_SubAccountModules   BuuhV_SubAccountModules[]
+  BuuhV_SubAccountWorkspace BuuhV_SubAccountWorkspace[]
+  BuuhV_Workspaces          BuuhV_Workspaces[]
+
+  @@index([asaasCustomerId], map: "asaasCustomerId")
+  @@index([createdAt], map: "createdAt")
+  @@index([documentNumber], map: "documentNumberKey")
+}
+
+model BuuhV_WorkspaceModules {
+  id               Int              @id @default(autoincrement())
+  workspaceId      Int
+  module           String           @db.VarChar(20)
+  createdAt        DateTime?        @default(now()) @db.DateTime(0)
+  BuuhV_Modules    BuuhV_Modules    @relation(fields: [module], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_BuuhV_WorkspaceModules_BuuhV_Modules")
+  BuuhV_Workspaces BuuhV_Workspaces @relation(fields: [workspaceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_BuuhV_WorkspaceModules_BuuhV_Workspaces")
+
+  @@index([module], map: "FK_BuuhV_WorkspaceModules_BuuhV_Modules")
+  @@index([workspaceId], map: "FK_BuuhV_WorkspaceModules_BuuhV_Workspaces")
+  @@index([createdAt], map: "createdAt")
+}
+
+model BuuhV_Workspaces {
+  id                        Int                         @id @default(autoincrement())
+  name                      String?                     @db.VarChar(80)
+  workspace                 String                      @db.VarChar(80)
+  userId                    Int
+  createdAt                 DateTime?                   @default(now()) @db.DateTime(0)
+  expiresAt                 DateTime?                   @db.DateTime(0)
+  BuuhV_Users               BuuhV_Users                 @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_BuuhV_Workspaces_BuuhV_Users")
+  BuuhV_SubAccountModules   BuuhV_SubAccountModules[]
+  BuuhV_SubAccountWorkspace BuuhV_SubAccountWorkspace[]
+  BuuhV_WorkspaceModules    BuuhV_WorkspaceModules[]
+
+  @@index([userId], map: "FK_BuuhV_Workspaces_BuuhV_Users")
+  @@index([createdAt], map: "createdAt")
+}
+
+enum BuuhV_Users_role {
+  admin
+  editor
+  gestor
+  user
+}
+
+enum BuuhV_Users_isCompany {
+  YES
+  NOT
+}
+
+enum BuuhV_Users_isSubAccount {
+  YES
+  NOT
+}
+
+enum BuuhV_Users_status {
+  ACTIVE
+  PENDING
+  INACTIVE
+}
