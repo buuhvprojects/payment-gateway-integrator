@@ -10,3 +10,17 @@ services:
     container_name: payment-gateway-integrator
     ports:
       - "${PORT}:${PORT}"
+  payment-gateway-integrator-mongodb:
+    image: mongo:5.0
+    restart: always
+    env_file: .env
+    container_name: payment-gateway-integrator-mongodb
+    environment:
+      - MONGO_EXTERNAL_PORT=${MONGO_EXTERNAL_PORT}
+      - MONGO_INTERNAL_PORT=${MONGO_INTERNAL_PORT}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "${MONGO_EXTERNAL_PORT}:${MONGO_INTERNAL_PORT}"
+    volumes:
+      - ./database/mongodb:/data/db
