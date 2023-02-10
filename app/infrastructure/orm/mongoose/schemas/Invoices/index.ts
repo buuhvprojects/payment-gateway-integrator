@@ -39,7 +39,6 @@ const InvoicesSchema = new Schema<InvoiceInterface>({
     },
     externalInvoiceId: {
         type: String,
-        required: false
     },
     fine: {
         type: Number,

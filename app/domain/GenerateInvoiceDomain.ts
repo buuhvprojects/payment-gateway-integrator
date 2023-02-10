@@ -9,7 +9,6 @@ interface NewInvoiceDueDate {
 }
 
 export interface GenerateInvoiceData {
-    externalInvoiceId: string;
     amount: 0;
     dueDate: NewInvoiceDueDate;
     customerId: string;
@@ -39,7 +38,7 @@ class GenerateInvoiceDomain {
             status: 'PENDING',
             fine: 1,
             interest: 2,
-            externalInvoiceId: this.data.externalInvoiceId,
+            externalInvoiceId: null,
             id: null,
             billingType: 'BOLETO',
             customerId: this.data.customerId,
@@ -49,6 +48,7 @@ class GenerateInvoiceDomain {
         delete data.createdAt;
         delete data._id;
         delete data.id;
+        delete data.externalInvoiceId;
 
         console.log('Estrutura gerada');
         return data;
