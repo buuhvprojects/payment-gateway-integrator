@@ -11,7 +11,6 @@ routes.post(
 async (req, res) => {
     try {
         const camps = await campsValidator(req.body, {
-            externalInvoiceId: 'required|string',
             amount: 'required|integer',
             dueDate: 'required|object',
             customerId: 'required|string',
