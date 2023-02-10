@@ -22,7 +22,7 @@
 		"docker:up-dev": "docker-compose -f docker-compose-dev.yml up --build",
 		"docker:publish": "node ./scripts/docker-publish.js",
 		"docker:up": "docker-compose up -d --force",
-		"docker:remove": "docker-compose down && docker rm animeverse-manager"
+		"docker:remove": "docker-compose down && docker rm payment-gateway-integrator"
 	},
 	"husky": {
 		"hooks": {
