@@ -11,7 +11,11 @@ routes.post(
 async (req, res) => {
     try {
         const camps = await campsValidator(req.body, {
-            userId: 'required|integer',
+            externalInvoiceId: 'required|string',
+            amount: 'required|integer',
+            dueDate: 'required|object',
+            customerId: 'required|string',
+            description: 'required|string'
         });
         if (camps.status === false) return res.status(200).json(camps);
         req.body = camps;
