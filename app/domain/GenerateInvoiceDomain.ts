@@ -14,6 +14,7 @@ export interface GenerateInvoiceData {
     dueDate: NewInvoiceDueDate;
     customerId: string;
     description: string;
+    invoiceType: string;
 }
 
 class GenerateInvoiceDomain {
@@ -43,6 +44,7 @@ class GenerateInvoiceDomain {
             billingType: 'BOLETO',
             customerId: this.data.customerId,
             gateway: 'ASAAS',
+            invoiceType: this.data.invoiceType,
         };
         delete data.createdAt;
         delete data._id;

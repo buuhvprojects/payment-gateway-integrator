@@ -25,11 +25,6 @@ routes.get(
     TokenManager.checkSession,
 async (req, res) => {
     try {
-        const camps = await campsValidator(req.body, {
-            userId: 'required|integer',
-        });
-        if (camps.status === false) return res.status(200).json(camps);
-        req.body = camps;
         return new InvoicesController(req, res).getInvoice();
     }
     catch (error) {

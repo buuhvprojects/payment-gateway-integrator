@@ -25,6 +25,7 @@ export interface InvoiceInterface {
     customerId: string;
     createdAt: string | Date;
     gateway: 'ASAAS';
+    invoiceType: string;
 }
 
 const InvoicesSchema = new Schema<InvoiceInterface>({
@@ -59,6 +60,10 @@ const InvoicesSchema = new Schema<InvoiceInterface>({
         default: 'BOLETO'
     },
     customerId: {
+        type: String,
+        required: true
+    },
+    invoiceType: {
         type: String,
         required: true
     },

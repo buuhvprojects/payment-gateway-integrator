@@ -64,7 +64,8 @@ class GenerateInvoiceCase extends UseCase {
             customerId: this.data.customerId,
             status: {
                 $ne: 'CANCELED'
-            }
+            },
+            invoiceType: this.data.invoiceType
         });
         const canItGenerateInvoice = this.validateLastInvoice(lastInvoice);
         console.log('Fatura validada');

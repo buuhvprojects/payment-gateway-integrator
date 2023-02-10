@@ -15,7 +15,8 @@ async (req, res) => {
             amount: 'required|integer',
             dueDate: 'required|object',
             customerId: 'required|string',
-            description: 'required|string'
+            description: 'required|string',
+            invoiceType: 'required|string',
         });
         if (camps.status === false) return res.status(200).json(camps);
         req.body = camps;
