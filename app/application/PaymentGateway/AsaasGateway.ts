@@ -5,6 +5,7 @@ class AsaasGateway extends Gateway {
     async cancelInvoice(invoiceId: string): Promise<boolean> {
         console.log('Cancelando fatura no Asaas');
         const response = await Asaas.cancelInvoice(invoiceId);
+        console.log('Resposta do Asaas', response);
         if (!response.status || response.values.deleted === false) {
             return false;
         }
