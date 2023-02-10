@@ -1,5 +1,5 @@
 {
-	"name": "payment-service",
+	"name": "payment-gateway-integrator",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",

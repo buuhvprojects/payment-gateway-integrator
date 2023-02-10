@@ -30,7 +30,7 @@ class MyModules extends BuuhVModules {
 
 function myApp() {
     const server = new Server(MyModules, {
-        appName: 'Payment Service',
+        appName: 'P G Integrator',
         port: parseInt(process.env.PORT),
         enableSocket: false,
         cors: [/(.*)localhost(:)?(.*)?/, /undefined/, /null/]
