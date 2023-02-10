@@ -36,26 +36,26 @@ class GenerateInvoiceCase extends UseCase {
 
         return isPaid;
     }
-    private async setAsaasInvoiceId(asaasInvoiceId: string, invoiceId: string) {
+    private async setExternalId(externalInvoiceId: string, invoiceId: string) {
         const response = await InvoicesRepository.updateById(invoiceId, {
-            asaasInvoiceId
+            externalInvoiceId
         });
         if (response) {
-            console.log('ID Asaas salvo com sucesso!');
+            console.log('ID do gateway externo salvo com sucesso!');
         } else {
-            console.log('Não foi possível salvar o ID Asaas');
+            console.log('Não foi possível salvar o ID do gateway externo!');
         }
     }
     private async registerInvoiceInGateway(domain: GenerateInvoiceDomain, newInvoice: InvoiceInterface, invoiceId: string) {
         console.log('Registrando fatura no Gateway', newInvoice.gateway);
-        const asaasInvoiceId = await domain.generateInvoiceInGateway({
+        const externalInvoiceId = await domain.generateInvoiceInGateway({
             amount: newInvoice.amount,
             invoiceId,
             customerId: newInvoice.customerId,
         });
 
-        if (asaasInvoiceId) {
-            await this.setAsaasInvoiceId(asaasInvoiceId, invoiceId);
+        if (externalInvoiceId) {
+            await this.setExternalId(externalInvoiceId, invoiceId);
         }
     }
     async init(): Promise<void> {
