@@ -1,4 +1,29 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint:fix
+# List only the files that were added to the index
+files=$(git diff --cached --name-only | grep -E '^app/.*\.(js|jsx|ts|tsx)$' || true)
+
+# If there are no files, exit with success code
+if [ -z "$files" ]; then
+  echo "skip no files"
+else
+  # Check if there are deleted files in the list
+  deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}' | grep -E '^app/.*\.(js|jsx|ts|tsx)$' || true)
+  if [ -n "$deleted_files" ]; then
+    while IFS= read -r deleted_file; do
+      files=$(echo "$files" | grep -v "$deleted_file")
+    done <<< "$deleted_files"
+  fi
+fi
+
+# If there are no files left, exit with success code
+if [ -z "$files" ]; then
+  echo "skip lint:fix"
+else
+  # Fix the ESLint issues on the staged files
+  npx eslint $files --ext .jsx,.ts,.tsx --fix
+
+  # Add the fixed files back to the index
+  git add $files
+fi

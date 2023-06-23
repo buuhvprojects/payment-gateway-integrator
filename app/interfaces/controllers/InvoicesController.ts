@@ -8,9 +8,12 @@ import PaidInvoiceCase, { PaidInvoiceCaseData } from "app/application/use_cases/
 import InvoiceWebhookCase from "app/application/use_cases/Webhooks/AsaasInvoiceWebhookCase";
 import { GenerateInvoiceData } from "app/domain/GenerateInvoiceDomain";
 import { Request } from "express";
+import Controller from "./Controller";
 
-class InvoicesController {
-    constructor(private req: Request, private res: Response) {}
+class InvoicesController extends Controller {
+    constructor(req: Request, res: Response) {
+        super(req, res);
+    }
     generateInvoice = async () => {
         try {
             const { body } = this.req;

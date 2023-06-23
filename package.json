@@ -48,7 +48,7 @@
 	"homepage": "REPOSITORY#readme",
 	"dependencies": {
 		"@buuhv/jwt-js": "^1.0.23",
-		"@buuhvprojects/chassis-microservice": "^1.5.1",
+		"@buuhvprojects/chassis-microservice": "^1.7.6",
 		"axios": "^1.3.2",
 		"dotenv": "^8.2.0",
 		"moment": "^2.29.1",
