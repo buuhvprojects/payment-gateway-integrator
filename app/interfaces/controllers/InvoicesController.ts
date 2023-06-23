@@ -15,94 +15,22 @@ class InvoicesController extends Controller {
         super(req, res);
     }
     generateInvoice = async () => {
-        try {
-            const { body } = this.req;
-
-            const useCase = new GenerateInvoiceCase(body as unknown as GenerateInvoiceData);
-            await useCase.init();
-            
-            return this.res.status(200).json(useCase.result);
-        } catch(error) {
-            return this.res.status(422).json({
-                status: false,
-                message: error.message
-            });
-        }
+        return this.execute(new GenerateInvoiceCase(this.req.body as unknown as GenerateInvoiceData));
     }
     cancelInvoice = async () => {
-        try {
-            const { params } = this.req;
-
-            const useCase = new CancelInvoiceCase(params as unknown as CancelInvoiceCaseData);
-            await useCase.init();
-            
-            return this.res.status(200).json(useCase.result);
-        } catch(error) {
-            return this.res.status(422).json({
-                status: false,
-                message: error.message
-            });
-        }
+        return this.execute(new CancelInvoiceCase(this.req.params as unknown as CancelInvoiceCaseData))
     }
     paidInvoice = async () => {
-        try {
-            const { params } = this.req;
-
-            const useCase = new PaidInvoiceCase(params as unknown as PaidInvoiceCaseData);
-            await useCase.init();
-            
-            return this.res.status(200).json(useCase.result);
-        } catch(error) {
-            return this.res.status(422).json({
-                status: false,
-                message: error.message
-            });
-        }
+        return this.execute(new PaidInvoiceCase(this.req.params as unknown as PaidInvoiceCaseData))
     }
     getInvoice = async () => {
-        try {
-            const { params } = this.req;
-
-            const useCase = new GetInvoiceCase(params as unknown as GetInvoiceCaseData);
-            await useCase.init();
-            
-            return this.res.status(200).json(useCase.result);
-        } catch(error) {
-            return this.res.status(422).json({
-                status: false,
-                message: error.message
-            });
-        }
+        this.execute(new GetInvoiceCase(this.req.params as unknown as GetInvoiceCaseData))
     }
     webhook = async () => {
-        try {
-            const { body } = this.req;
-
-            const useCase = new InvoiceWebhookCase(body as unknown as IAsaas.WebhookInvoice);
-            await useCase.init();
-            
-            return this.res.status(200).json(useCase.result);
-        } catch(error) {
-            return this.res.status(422).json({
-                status: false,
-                message: error.message
-            });
-        }
+        return this.execute(new InvoiceWebhookCase(this.req.body as unknown as IAsaas.WebhookInvoice));
     }
     getCustomerInvoices = async () => {
-        try {
-            const { query } = this.req;
-
-            const useCase = new CustomerInvoicesCase(query as unknown as CustomerInvoicesCaseData);
-            await useCase.init();
-            
-            return this.res.status(200).json(useCase.result);
-        } catch(error) {
-            return this.res.status(422).json({
-                status: false,
-                message: error.message
-            });
-        }
+        this.execute(new CustomerInvoicesCase(this.req.query as unknown as CustomerInvoicesCaseData));
     }
 }
 export default InvoicesController;
